@@ -1,4 +1,4 @@
-package gift
+package weight_random
 
 import (
 	"crypto/rand"
@@ -6,17 +6,17 @@ import (
 	"math/big"
 )
 
-type Gifts struct {
-	data []*Gift
+type WeightRandrom struct {
+	data []*WeightConfig
 }
 
-func NewGifts() *Gifts {
-	return &Gifts{
-		data: make([]*Gift, 0),
+func NewWeightRandrom() *WeightRandrom {
+	return &WeightRandrom{
+		data: make([]*WeightConfig, 0),
 	}
 }
 
-type Gift struct {
+type WeightConfig struct {
 	name   string
 	weight int64
 	WeightRange
@@ -27,18 +27,18 @@ type WeightRange struct {
 	max int64
 }
 
-func (n *Gifts) AddGift(name string, weight int64) {
+func (n *WeightRandrom) AddWeightConfig(name string, weight int64) {
 	if n.data == nil {
-		n.data = make([]*Gift, 0)
+		n.data = make([]*WeightConfig, 0)
 	}
 
-	n.data = append(n.data, &Gift{
+	n.data = append(n.data, &WeightConfig{
 		name:   name,
 		weight: weight,
 	})
 }
 
-func (n *Gifts) AssignWeight() {
+func (n *WeightRandrom) AssignWeight() {
 	sumWeight := int64(0)
 	for _, e := range n.data {
 		e.min = sumWeight
@@ -47,7 +47,7 @@ func (n *Gifts) AssignWeight() {
 	}
 }
 
-func (n *Gifts) RandGet() *Gift {
+func (n *WeightRandrom) RandGet() *WeightConfig {
 	sumWeight := int64(0)
 	for _, e := range n.data {
 		sumWeight += e.weight
@@ -62,7 +62,7 @@ func (n *Gifts) RandGet() *Gift {
 	return nil
 }
 
-func (n *Gifts) Range() {
+func (n *WeightRandrom) Range() {
 	for _, e := range n.data {
 		fmt.Printf("name: %s,weight:%d,min:%d,max: %d \n", e.name, e.weight, e.min, e.max)
 	}

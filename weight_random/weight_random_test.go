@@ -1,4 +1,4 @@
-package gift
+package weight_random
 
 import (
 	"fmt"
@@ -6,11 +6,11 @@ import (
 )
 
 func Test_gist(t *testing.T) {
-	nn := NewGifts()
-	nn.AddGift("80", 80)
-	nn.AddGift("3", 3)
-	nn.AddGift("10", 10)
-	nn.AddGift("7", 7)
+	nn := NewWeightRandrom()
+	nn.AddWeightConfig("80", 80)
+	nn.AddWeightConfig("3", 3)
+	nn.AddWeightConfig("10", 10)
+	nn.AddWeightConfig("7", 7)
 	nn.AssignWeight()
 	nn.Range()
 
