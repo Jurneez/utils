@@ -1,4 +1,4 @@
-module tool/utils
+module github.com/Jurneez/utils
 
 go 1.19
 
