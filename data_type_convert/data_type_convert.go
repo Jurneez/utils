@@ -10,6 +10,7 @@ func StringToInt(str string) int {
 	return int
 }
 
+// 输出含有特殊字符的字符串
 func PrintSpeicalString(str string) string {
 	return strconv.Quote(str)
 }
