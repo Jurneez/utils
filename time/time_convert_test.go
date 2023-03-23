@@ -2,7 +2,8 @@ package time
 
 import (
 	"testing"
-	"tool/utils/common"
+
+	"github.com/Jurneez/utils/common"
 )
 
 func Test_TimeConvTimestemp(t *testing.T) {

@@ -2,7 +2,8 @@ package export
 
 import (
 	"fmt"
-	"tool/utils/reflects"
+
+	"github.com/Jurneez/utils/reflects"
 
 	"github.com/tealeg/xlsx"
 )
