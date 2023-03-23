@@ -1,59 +1,79 @@
 package export
 
 import (
-	"errors"
+	"fmt"
+	"tool/utils/reflects"
 
 	"github.com/tealeg/xlsx"
 )
 
 type Excel struct {
-	Sheets   []*Sheet
-	FilePath string
+	Headers  []string
+	Data     interface{} // 数组类型 结构体
+	FilePath string      //文件保存路径
+	Sheet    *xlsx.Sheet
 	File     *xlsx.File
 }
-type Sheet struct {
-	name   string
-	titles []string // excel的头部名称
-	cells  [][]interface{}
-}
 
-func NewExcel() *Excel {
-	return &Excel{
-		Sheets:   make([]*Sheet, 0),
-		FilePath: "./excel.xlsx",
-		File:     xlsx.NewFile(),
+/*
+path: 数据导出路径
+*/
+func NewExcel(headers []string, data interface{}, path string) (*Excel, error) {
+	if path == "" {
+		path = "./excel.xlsx"
 	}
+
+	file := xlsx.NewFile()
+	sheet, err := file.AddSheet("sheet1")
+	if err != nil {
+		return nil, err
+	}
+
+	return &Excel{
+		Headers:  headers,
+		Data:     data,
+		File:     file,
+		FilePath: path,
+		Sheet:    sheet,
+	}, nil
 }
 
-func (e *Excel) SetFilePath(path string) {
-	e.FilePath = path
-}
-
-func (e *Excel) SetSheet(sheetName string) error {
-	sheet, err := e.File.AddSheet(sheetName)
+func (e *Excel) Export() error {
+	dataMap, err := reflects.StructToMapSlice(e.Data, "")
 	if err != nil {
 		return err
 	}
-	if sheet == nil {
-		return errors.New("error")
+	if len(dataMap) == 0 {
+		return nil
+	}
+
+	if len(e.Headers) == 0 {
+		headers := make([]string, 0)
+		for k := range dataMap[0] {
+			headers = append(headers, k)
+		}
+		e.Headers = headers
+	}
+
+	headerRow := e.Sheet.AddRow() // 创建首行
+	headerRow.SetHeightCM(0.5)    // 设置行高
+
+	for _, each := range e.Headers {
+		headerRow.AddCell().Value = each
+	}
+
+	for _, index := range dataMap {
+		row := e.Sheet.AddRow()
+		row.SetHeightCM(0.5)
+		for _, key := range e.Headers {
+			row.AddCell().Value = fmt.Sprintf("%v", index[key])
+		}
+	}
+
+	// 持久化到磁盘
+	if err := e.File.Save("data.xlsx"); err != nil {
+		return err
 	}
 
 	return nil
-}
-
-func Excel1() {
-	file := xlsx.NewFile()
-	sheet, _ := file.AddSheet("Sheet1")
-	row := sheet.AddRow()
-	row.SetHeightCM(1) //设置每行的高度
-	cell := row.AddCell()
-	cell.Value = "haha"
-	cell = row.AddCell()
-	cell.Value = "xixi"
-
-	err := file.Save("./file.xlsx")
-	if err != nil {
-		panic(err)
-	}
-
 }

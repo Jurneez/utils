@@ -1,8 +1,8 @@
-package reflect_struct
+package reflects
 
 import (
 	"testing"
-	"tool/goutils/common"
+	"tool/utils/common"
 )
 
 func Test_simpleTraverse(t *testing.T) {
