@@ -27,7 +27,7 @@ func Intersection(s1, s2 interface{}) interface{} {
 	outArr := reflect.MakeSlice(inArr1.Type(), 0, inArr2.Len())
 	for i := 0; i < inArr2.Len(); i++ {
 		iVal := inArr2.Index(i)
-		if _, ok := s1Map[iVal.Interface()]; !ok {
+		if _, ok := s1Map[iVal.Interface()]; ok {
 			outArr = reflect.Append(outArr, inArr2.Index(i))
 		}
 	}
