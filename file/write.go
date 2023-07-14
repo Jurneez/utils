@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
@@ -20,6 +21,12 @@ func CreateAndAppend(content interface{}, path string, newline bool) (err error)
 	if err != nil {
 		return err
 	}
+	// 去掉 string(b)字符串中带有的 双引号
+	b1, strconverr := strconv.Unquote(string(b))
+	if strconverr != nil {
+		return strconverr
+	}
+
 	if !isVaildPath(path) {
 		return errors.New("path error!")
 	}
@@ -32,7 +39,7 @@ func CreateAndAppend(content interface{}, path string, newline bool) (err error)
 	defer file.Close()
 	//写入文件时，使用带缓存的 *Writer
 	write := bufio.NewWriter(file)
-	write.WriteString(string(b))
+	write.WriteString(string(b1))
 	write.WriteString("\n")
 	//Flush将缓存的文件真正写入到文件中
 	write.Flush()
