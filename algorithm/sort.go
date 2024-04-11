@@ -1,6 +1,8 @@
 package algorithm
 
-import "fmt"
+import (
+	"fmt"
+)
 
 // 交换排序——冒泡排序
 func BubbleSort(numbers []int) []int {
@@ -136,6 +138,44 @@ func mergeArr(numbers1, numbers2 []int) []int {
 	}
 
 	return res
+}
+
+// 堆排序：数据从小到大排
+// 构建大堆顶
+func HeapSort(numbers []int64) {
+	length := len(numbers)
+	for i := 0; i < length; i++ {
+		fmt.Println("待排序的初始值", numbers[:length-i])
+		singleHeapSort(numbers[:length-i], 0)
+		fmt.Println("堆排序结果", numbers)
+		numbers[0], numbers[length-i-1] = numbers[length-i-1], numbers[0]
+		fmt.Println("排序结果", numbers)
+	}
+}
+
+// 单节点数据构建
+/*
+len = 数组长度
+叶子节点： i <= len/2+1
+非叶子节点：i > len/2 +1
+*/
+func singleHeapSort(numbers []int64, index int64) {
+	if index > int64(len(numbers)-1) {
+		return
+	}
+	temp := len(numbers)/2 + 1
+	if index > int64(temp) { // 叶子节点，不做处理
+		return
+	} else { // 非叶子节点
+		singleHeapSort(numbers, 2*index+1) // 处理左节点
+		singleHeapSort(numbers, 2*index+2) // 处理右节点
+		if (2*index+1) <= int64(len(numbers)-1) && numbers[index] < numbers[2*index+1] {
+			numbers[index], numbers[2*index+1] = numbers[2*index+1], numbers[index]
+		}
+		if (2*index+2) <= int64(len(numbers)-1) && numbers[index] < numbers[2*index+2] {
+			numbers[index], numbers[2*index+2] = numbers[2*index+2], numbers[index]
+		}
+	}
 }
 
 // 非比较排序算法——基数排序算法：适合正整数排序
