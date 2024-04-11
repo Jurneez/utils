@@ -6,19 +6,27 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strconv"
 	"strings"
 )
 
 /*
- create file and append write
- content:the content of needing write into file
- path: new file's path
+create file and append write
+content:the content of needing write into file
+path: new file's path
+newline: 加入数据后是否换行
 */
-func CreateAndAppend(content interface{}, path string) (err error) {
+func CreateAndAppend(content interface{}, path string, newline bool) (err error) {
 	b, err := json.MarshalIndent(content, "", "")
 	if err != nil {
 		return err
 	}
+	// 去掉 string(b)字符串中带有的 双引号
+	b1, strconverr := strconv.Unquote(string(b))
+	if strconverr != nil {
+		return strconverr
+	}
+
 	if !isVaildPath(path) {
 		return errors.New("path error!")
 	}
@@ -31,7 +39,8 @@ func CreateAndAppend(content interface{}, path string) (err error) {
 	defer file.Close()
 	//写入文件时，使用带缓存的 *Writer
 	write := bufio.NewWriter(file)
-	write.WriteString(string(b))
+	write.WriteString(string(b1))
+	write.WriteString("\n")
 	//Flush将缓存的文件真正写入到文件中
 	write.Flush()
 	return nil
