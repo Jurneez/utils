@@ -1,6 +1,7 @@
 package algorithm
 
 import (
+	"math"
 	"testing"
 )
 
@@ -14,6 +15,8 @@ import (
 //		t.Log(CountSort(arr))
 //	}
 func Test_HeapSort(t *testing.T) {
-	arr := []int64{6, 3, 4, 8, 7, 2, 5, 10, 9, 7}
-	HeapSort(arr)
+	// arr := []int64{6, 3, 4, 8, 7, 2, 5, 10, 9, 7}
+	// HeapSort(arr)
+
+	t.Log(int(math.Pow(2, float64(1-1))))
 }
