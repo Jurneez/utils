@@ -64,17 +64,16 @@ func SelectSort(numbers []int) {
 
 // 插入排序
 func InsertSort(numbers []int) {
-	for i := 0; i < len(numbers)-1; i++ {
-		fmt.Println(numbers)
-		for j := i + 1; j > 0; j-- {
+	for i := 1; i < len(numbers); i++ {
+		for j := i; j > 0; j-- {
 			if numbers[j] < numbers[j-1] {
 				numbers[j], numbers[j-1] = numbers[j-1], numbers[j]
 			} else {
 				break
 			}
+			fmt.Printf("i = %d, %+v \n", i, numbers)
 		}
 	}
-	fmt.Println(numbers)
 }
 
 // 希尔排序
