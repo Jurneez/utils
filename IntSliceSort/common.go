@@ -19,8 +19,38 @@ func GetInt64ArrayMaxValue(numbers []int64) int64 {
 	return max
 }
 
+func GetIntArrayMaxValue(numbers []int) int {
+	if len(numbers) == 0 {
+		return -1
+	}
+	var max int = numbers[0]
+	for i := 0; i < len(numbers); i++ {
+		if max < numbers[i] {
+			max = numbers[i]
+		}
+	}
+	return max
+}
+
 // 获取数据数组中的最大值和最小值
 func GetInt64ArrayMaxAndMinValue(numbers []int64) (min, max int64) {
+	if len(numbers) == 0 {
+		return -1, -1
+	}
+	min, max = numbers[0], numbers[0]
+	for i := 0; i < len(numbers); i++ {
+		if max < numbers[i] {
+			max = numbers[i]
+		}
+		if min > numbers[i] {
+			min = numbers[i]
+		}
+	}
+
+	return
+}
+
+func GetIntArrayMaxAndMinValue(numbers []int) (max, min int) {
 	if len(numbers) == 0 {
 		return -1, -1
 	}

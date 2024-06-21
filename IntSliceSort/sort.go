@@ -2,6 +2,7 @@ package intslicesort
 
 import (
 	"fmt"
+	"sort"
 )
 
 // 交换排序——冒泡排序
@@ -177,6 +178,37 @@ func buildBigHeap(numbers []int64, index int64) {
 			numbers[index], numbers[2*index+2] = numbers[2*index+2], numbers[index]
 		}
 	}
+}
+
+// 非比较排序算法——桶排序
+func BucketSort(numbers []int) []int {
+	maxNum, minNum := GetIntArrayMaxAndMinValue(numbers) // 获取数组最大值和最小值
+	numberLen := len(numbers)
+	bucketLen := (maxNum-minNum)/numberLen + 1
+	fmt.Printf("maxNum = %d ;minNum %d ; numberLen = %d ;bucketLen = %d ;\n ", maxNum, minNum, numberLen, bucketLen)
+	buckets := make([][]int, bucketLen) // 构建桶
+
+	// 将数据写入桶
+	for _, number := range numbers {
+		index := (number - minNum) / numberLen
+		if len(buckets[index]) == 0 {
+			buckets[index] = make([]int, 0)
+		}
+		buckets[index] = append(buckets[index], number)
+	}
+
+	fmt.Printf("入桶后的数据：%+v \n", buckets)
+
+	res := make([]int, 0)
+	for i := 0; i < bucketLen; i++ {
+		if len(buckets[i]) > 0 {
+			sort.Ints(buckets[i])            // 将每个桶中的数据进行排序
+			res = append(res, buckets[i]...) // 排序后的数据写入res
+		}
+	}
+
+	fmt.Printf("排序后的桶中数据：%+v \n", buckets)
+	return res
 }
 
 // 非比较排序算法——基数排序算法：适合正整数排序
