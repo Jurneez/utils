@@ -1,4 +1,4 @@
-package algorithm
+package intslicesort
 
 import (
 	"fmt"
@@ -25,6 +25,7 @@ func QuickSort(low, high int, numbers []int) {
 		QuickSort(mid+1, high, numbers)
 	}
 }
+
 func quick_sort_get_middle(low, high int, numbers []int) int {
 	if low == high {
 		return 0
